@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFDF5">
+
+    <!-- 상단 타이틀 -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event Map"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:fontFamily="@font/abel_regular"
+        android:textColor="#000000"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 상단 버튼 영역 -->
+    <LinearLayout
+        android:id="@+id/topButtons"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btnNotification"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_notification"
+            android:layout_marginEnd="16dp"/>
+
+        <ImageView
+            android:id="@+id/btnBookmark"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_bookmark"/>
+
+        <ImageView
+            android:id="@+id/btnDetail"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_detail"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+
+
+    <!-- 지도 placeholder -->
+    <ImageView
+        android:id="@+id/mapPlaceholder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_map_placeholder"
+        android:scaleType="centerCrop"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cardNearYou" />
+
+    <!-- Near You 카드 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardNearYou"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_margin="20dp"
+        android:background="#FFFFFF"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/nearYouTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Near You"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="12dp">
+
+                <!-- 아이콘 -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_marker_yellow" />
+
+                <!-- 텍스트 영역 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Music Festival"
+                        android:textSize="16sp"
+                        android:textColor="#000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.7 km"
+                        android:textSize="14sp"
+                        android:textColor="#666" />
+
+                </LinearLayout>
+
+                <!-- 북마크 아이콘 -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_bookmark"
+                    android:layout_gravity="center_vertical" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
