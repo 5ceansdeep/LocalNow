@@ -38,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        ImageView btnCalendar = findViewById(R.id.btnCalendar);
+        btnCalendar.setOnClickListener(v -> {
+            // CalendarActivity 이동
+            Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
+            startActivity(intent);
+        });
+
         /*
         btnDetail.setOnClickListener(v -> {
             // EventDetailActivity 이동
