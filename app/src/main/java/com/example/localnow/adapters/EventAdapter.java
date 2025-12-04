@@ -3,69 +3,81 @@ package com.example.localnow.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.localnow.BookmarkActivity;
+import com.example.localnow.BookmarkManager;
 import com.example.localnow.R;
 import com.example.localnow.model.Event;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
+    private final List<Event> events;
+    private final BookmarkManager bookmarkManager;
 
-    private List<Event> eventList;
-
-    public EventAdapter(List<Event> eventList) {
-        this.eventList = eventList;
+    public EventAdapter(List<Event> events, BookmarkManager bookmarkManager) {
+        this.events = events;
+        this.bookmarkManager = bookmarkManager;
     }
 
     @NonNull
     @Override
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_event_card, parent, false);
         return new EventViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
-        Event event = eventList.get(position);
-        holder.title.setText(event.getTitle());
-        holder.subtitle.setText(event.getDate());
-
-        // Set Icon based on type
-        if (event.getType().equals("Music")) {
-            holder.icon.setImageResource(R.drawable.ic_marker_yellow);
-        } else if (event.getType().equals("Marathon")) {
-            holder.icon.setImageResource(R.drawable.ic_marker_green);
-        } else if (event.getType().equals("Food")) {
-            holder.icon.setImageResource(R.drawable.ic_marker_pink);
-        }
-
-        // Set Bookmark
-        if (event.isBookmarked()) {
-            holder.bookmark.setImageResource(R.drawable.ic_bookmark);
-        } else {
-            holder.bookmark.setImageResource(R.drawable.ic_bookmark_outline); // Assuming you have an outline or just hide it
-        }
+        Event event = events.get(position);
+        holder.bind(event, position);
     }
 
     @Override
     public int getItemCount() {
-        return eventList.size();
+        return events.size();
     }
 
-    static class EventViewHolder extends RecyclerView.ViewHolder {
-        ImageView icon;
-        TextView title;
-        TextView subtitle;
-        ImageView bookmark;
+    class EventViewHolder extends RecyclerView.ViewHolder {
+        TextView titleText;
+        TextView dateText;
+        ImageButton bookmarkButton;
 
-        public EventViewHolder(@NonNull View itemView) {
+        EventViewHolder(View itemView) {
             super(itemView);
-            icon = itemView.findViewById(R.id.eventIcon);
-            title = itemView.findViewById(R.id.eventTitle);
-            subtitle = itemView.findViewById(R.id.eventSubtitle);
-            bookmark = itemView.findViewById(R.id.bookmarkIcon);
+            titleText = itemView.findViewById(R.id.tv_event_title);
+            dateText = itemView.findViewById(R.id.tv_event_date);
+            bookmarkButton = itemView.findViewById(R.id.btn_bookmark);
+        }
+
+        void bind(Event event, int position) {
+            titleText.setText(event.getTitle());
+            dateText.setText(event.getDate());
+
+            updateBookmarkIcon(event);
+
+            bookmarkButton.setOnClickListener(v -> {
+                bookmarkManager.toggleBookmark(event.getId());
+                event.setBookmarked(bookmarkManager.isBookmarked(event.getId()));
+                updateBookmarkIcon(event);
+
+                if (itemView.getContext() instanceof BookmarkActivity) {
+                    events.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, events.size());
+                }
+            });
+        }
+
+        private void updateBookmarkIcon(Event event) {
+            if (bookmarkManager.isBookmarked(event.getId())) {
+                bookmarkButton.setImageResource(R.drawable.ic_bookmark_filled);
+            } else {
+                bookmarkButton.setImageResource(R.drawable.ic_bookmark_border);
+            }
         }
     }
 }

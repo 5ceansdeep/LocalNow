@@ -20,11 +20,14 @@ public class CalendarActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<Event> allEvents;
+    private BookmarkManager bookmarkManager;  // ✅ 추가
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        bookmarkManager = new BookmarkManager(this);  // ✅ 추가
 
         calendarView = findViewById(R.id.calendarView);
         recyclerView = findViewById(R.id.rv_calendar_events);
@@ -53,7 +56,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
         }
 
-        adapter = new EventAdapter(eventsOnDate);
+        adapter = new EventAdapter(eventsOnDate, bookmarkManager);  // ✅ bookmarkManager 추가
         recyclerView.setAdapter(adapter);
     }
 
