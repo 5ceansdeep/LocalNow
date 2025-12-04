@@ -57,6 +57,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_event_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/freesentation_vf"
@@ -66,6 +67,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tv_event_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/freesentation_vf"
@@ -75,6 +77,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/iv_bookmark"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_bookmark"
@@ -92,6 +95,7 @@
                     android:layout_marginBottom="4dp" />
 
                 <TextView
+                    android:id="@+id/tv_event_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/freesentation_vf"
@@ -100,13 +104,12 @@
                     android:textSize="16sp"
                     android:layout_marginBottom="4dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/freesentation_vf"
-                    android:text="행사 사진"
-                    android:textColor="#666666"
-                    android:textSize="14sp"
+                <ImageView
+                    android:id="@+id/iv_event_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_map_placeholder"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="80dp" />
 

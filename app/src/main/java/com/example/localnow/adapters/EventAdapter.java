@@ -45,8 +45,21 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         if (event.isBookmarked()) {
             holder.bookmark.setImageResource(R.drawable.ic_bookmark);
         } else {
-            holder.bookmark.setImageResource(R.drawable.ic_bookmark_outline); // Assuming you have an outline or just hide it
+            holder.bookmark.setImageResource(R.drawable.ic_bookmark_outline); // Assuming you have an outline or just
+                                                                              // hide it
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(holder.itemView.getContext(),
+                    com.example.localnow.EventDetailActivity.class);
+            intent.putExtra("id", event.getId());
+            intent.putExtra("title", event.getTitle());
+            intent.putExtra("date", event.getDate());
+            intent.putExtra("location", event.getLocation());
+            intent.putExtra("image", event.getImage());
+            intent.putExtra("isBookmarked", event.isBookmarked());
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
 
     @Override
