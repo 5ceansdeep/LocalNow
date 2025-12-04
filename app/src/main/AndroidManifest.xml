@@ -23,6 +23,8 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".BookmarkActivity" />
         <activity android:name=".EventDetailActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity" />
 
     </application>
 
