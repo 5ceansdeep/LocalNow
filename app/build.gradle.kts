@@ -15,6 +15,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Support all ABIs for Kakao Map native library
+        ndk {
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
     }
 
     buildTypes {
@@ -32,6 +37,15 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
@@ -55,8 +69,8 @@ dependencies {
     // Image Loading
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    // Kakao Map (Legacy)
-    implementation("com.kakao.maps.open:android:2.9.5")
+    // Kakao Map SDK - Temporarily disabled due to native library issues
+    // implementation("com.kakao.maps.open:android:2.11.9")
 
     // Google Sign In
     implementation("com.google.android.gms:play-services-auth:20.7.0")

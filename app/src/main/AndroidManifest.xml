@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.localnow">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".GlobalApplication"
@@ -14,9 +16,9 @@
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="YOUR_KAKAO_APP_KEY" />
+            android:value="68d6b9b8cf31c66b8a16177d7ee4f891" />
 
-        <!-- Splash -->
+        <!-- Launcher Activity -->
         <activity android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -34,7 +36,6 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".CalendarActivity" />
-
     </application>
 
 </manifest>

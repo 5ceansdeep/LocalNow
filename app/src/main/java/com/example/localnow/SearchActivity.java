@@ -21,39 +21,17 @@ public class SearchActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.rv_search_results);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Initialize adapter with empty list
+        allEvents = new ArrayList<>();
+        adapter = new EventAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
         android.widget.EditText searchBox = findViewById(R.id.et_search);
 
         // Fetch events from server or use MockData
         fetchEvents(recyclerView, searchBox);
-    }
 
-    private void fetchEvents(RecyclerView recyclerView, android.widget.EditText searchBox) {
-        com.example.localnow.api.RetrofitClient.getApiService().getEvents()
-                .enqueue(new retrofit2.Callback<java.util.List<com.example.localnow.model.Event>>() {
-                    @Override
-                    public void onResponse(retrofit2.Call<java.util.List<com.example.localnow.model.Event>> call,
-                            retrofit2.Response<java.util.List<com.example.localnow.model.Event>> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            allEvents = response.body();
-                        } else {
-                            allEvents = MockData.getEvents();
-                        }
-                        setupSearch(recyclerView, searchBox);
-                    }
-
-                    @Override
-                    public void onFailure(retrofit2.Call<java.util.List<com.example.localnow.model.Event>> call,
-                            Throwable t) {
-                        allEvents = MockData.getEvents();
-                        setupSearch(recyclerView, searchBox);
-                    }
-                });
-    }
-
-    private void setupSearch(RecyclerView recyclerView, android.widget.EditText searchBox) {
-        adapter = new EventAdapter(allEvents);
-        recyclerView.setAdapter(adapter);
-
+        // Setup Search Listener
         searchBox.addTextChangedListener(new android.text.TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -70,11 +48,43 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchEvents(RecyclerView recyclerView, android.widget.EditText searchBox) {
+        com.example.localnow.api.RetrofitClient.getApiService().getEvents()
+                .enqueue(new retrofit2.Callback<com.example.localnow.model.EventResponse>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<com.example.localnow.model.EventResponse> call,
+                            retrofit2.Response<com.example.localnow.model.EventResponse> response) {
+                        if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
+                            allEvents = response.body().getData();
+                        } else {
+                            allEvents = MockData.getEvents();
+                        }
+                        // Update adapter with all events initially
+                        adapter.updateList(allEvents);
+
+                        // If there's already text, filter it
+                        if (searchBox.getText().length() > 0) {
+                            filterEvents(searchBox.getText().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<com.example.localnow.model.EventResponse> call,
+                            Throwable t) {
+                        allEvents = MockData.getEvents();
+                        adapter.updateList(allEvents);
+                        if (searchBox.getText().length() > 0) {
+                            filterEvents(searchBox.getText().toString());
+                        }
+                    }
+                });
+    }
+
     private void filterEvents(String query) {
         List<com.example.localnow.model.Event> filteredList = new ArrayList<>();
 
         if (query.isEmpty()) {
-            filteredList = allEvents;
+            filteredList = new ArrayList<>(allEvents);
         } else {
             String lowerQuery = query.toLowerCase();
             for (com.example.localnow.model.Event event : allEvents) {
@@ -85,9 +95,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         }
-
-        adapter = new EventAdapter(filteredList);
-        RecyclerView recyclerView = findViewById(R.id.rv_search_results);
-        recyclerView.setAdapter(adapter);
+        adapter.updateList(filteredList);
     }
 }

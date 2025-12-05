@@ -32,6 +32,10 @@ public class CalendarActivity extends AppCompatActivity {
 
         allEvents = MockData.getEvents();
 
+        // Initialize adapter
+        adapter = new EventAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
         // Show events for today initially
         updateEventsForDate(System.currentTimeMillis());
 
@@ -53,8 +57,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
         }
 
-        adapter = new EventAdapter(eventsOnDate);
-        recyclerView.setAdapter(adapter);
+        adapter.updateList(eventsOnDate);
     }
 
     private boolean isEventOnDate(Event event, String date) {

@@ -21,7 +21,11 @@ public class EventDetailActivity extends AppCompatActivity {
         String location = getIntent().getStringExtra("location");
         String image = getIntent().getStringExtra("image");
         eventId = getIntent().getIntExtra("id", -1);
-        isBookmarked = getIntent().getBooleanExtra("isBookmarked", false);
+
+        // Use BookmarkManager for global state
+        com.example.localnow.utils.BookmarkManager bookmarkManager = com.example.localnow.utils.BookmarkManager
+                .getInstance(this);
+        isBookmarked = bookmarkManager.isBookmarked(eventId);
 
         // UI References
         TextView tvTitle = findViewById(R.id.tv_event_title);
@@ -62,11 +66,15 @@ public class EventDetailActivity extends AppCompatActivity {
     }
 
     private void toggleBookmark() {
+        com.example.localnow.utils.BookmarkManager bookmarkManager = com.example.localnow.utils.BookmarkManager
+                .getInstance(this);
+
         // Check if we have a valid event ID (from server)
         if (eventId == -1) {
             android.widget.Toast.makeText(this, "서버 연결이 필요합니다 (MockData)", android.widget.Toast.LENGTH_SHORT).show();
             // Still toggle locally for demo
-            isBookmarked = !isBookmarked;
+            bookmarkManager.toggleBookmark(eventId);
+            isBookmarked = bookmarkManager.isBookmarked(eventId);
             updateBookmarkIcon();
             return;
         }
@@ -78,19 +86,28 @@ public class EventDetailActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
                             if (response.isSuccessful()) {
+                                bookmarkManager.removeBookmark(eventId);
                                 isBookmarked = false;
                                 updateBookmarkIcon();
                                 android.widget.Toast.makeText(EventDetailActivity.this, "북마크 제거됨",
                                         android.widget.Toast.LENGTH_SHORT).show();
                             } else {
-                                android.widget.Toast.makeText(EventDetailActivity.this, "북마크 제거 실패",
+                                // Fallback to local
+                                bookmarkManager.removeBookmark(eventId);
+                                isBookmarked = false;
+                                updateBookmarkIcon();
+                                android.widget.Toast.makeText(EventDetailActivity.this, "북마크 제거됨 (로컬)",
                                         android.widget.Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(retrofit2.Call<Void> call, Throwable t) {
-                            android.widget.Toast.makeText(EventDetailActivity.this, "네트워크 오류",
+                            // Fallback to local
+                            bookmarkManager.removeBookmark(eventId);
+                            isBookmarked = false;
+                            updateBookmarkIcon();
+                            android.widget.Toast.makeText(EventDetailActivity.this, "북마크 제거됨 (로컬/오프라인)",
                                     android.widget.Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -103,19 +120,28 @@ public class EventDetailActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
                             if (response.isSuccessful()) {
+                                bookmarkManager.addBookmark(eventId);
                                 isBookmarked = true;
                                 updateBookmarkIcon();
                                 android.widget.Toast.makeText(EventDetailActivity.this, "북마크 추가됨",
                                         android.widget.Toast.LENGTH_SHORT).show();
                             } else {
-                                android.widget.Toast.makeText(EventDetailActivity.this, "북마크 추가 실패",
+                                // Fallback to local
+                                bookmarkManager.addBookmark(eventId);
+                                isBookmarked = true;
+                                updateBookmarkIcon();
+                                android.widget.Toast.makeText(EventDetailActivity.this, "북마크 추가됨 (로컬)",
                                         android.widget.Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(retrofit2.Call<Void> call, Throwable t) {
-                            android.widget.Toast.makeText(EventDetailActivity.this, "네트워크 오류",
+                            // Fallback to local
+                            bookmarkManager.addBookmark(eventId);
+                            isBookmarked = true;
+                            updateBookmarkIcon();
+                            android.widget.Toast.makeText(EventDetailActivity.this, "북마크 추가됨 (로컬/오프라인)",
                                     android.widget.Toast.LENGTH_SHORT).show();
                         }
                     });

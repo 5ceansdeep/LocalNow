@@ -17,6 +17,18 @@
         android:textSize="32sp" />
 
     <EditText
+        android:id="@+id/et_signup_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/white"
+        android:fontFamily="@font/freesentation_vf"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:textSize="16sp" />
+
+    <EditText
         android:id="@+id/et_signup_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

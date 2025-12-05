@@ -4,6 +4,7 @@ import com.example.localnow.model.BookmarkRequest;
 import com.example.localnow.model.Event;
 import com.example.localnow.model.GoogleLoginRequest;
 import com.example.localnow.model.LoginRequest;
+import com.example.localnow.model.RegisterRequest;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import retrofit2.http.Path;
 
 public interface ApiService {
     @POST("/auth/register")
-    Call<Void> register(@Body LoginRequest request);
+    Call<Void> register(@Body RegisterRequest request);
 
     @POST("/auth/login")
     Call<Void> login(@Body LoginRequest request);
@@ -25,7 +26,7 @@ public interface ApiService {
     Call<Void> googleLogin(@Body GoogleLoginRequest request);
 
     @GET("/api/events")
-    Call<List<Event>> getEvents();
+    Call<com.example.localnow.model.EventResponse> getEvents();
 
     @POST("/api/bookmarks/")
     Call<Void> addBookmark(@Body BookmarkRequest request);
@@ -34,5 +35,5 @@ public interface ApiService {
     Call<Void> deleteBookmark(@Path("id") int id);
 
     @GET("/api/bookmarks/")
-    Call<List<Event>> getBookmarks();
+    Call<com.example.localnow.model.EventResponse> getBookmarks();
 }

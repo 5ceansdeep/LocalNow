@@ -1,21 +1,39 @@
 package com.example.localnow.model;
 
 public class Event {
+    @com.google.gson.annotations.SerializedName("title")
     private String title;
+    @com.google.gson.annotations.SerializedName("date")
     private String date;
-    private String type; // "Music", "Marathon", "Food"
+    @com.google.gson.annotations.SerializedName("type")
+    private String type; // Note: Backend might not return this, handled safely in adapter
+    @com.google.gson.annotations.SerializedName("category")
+    private String category; // Backend returns "category"
+    @com.google.gson.annotations.SerializedName("is_bookmarked")
     private boolean isBookmarked;
-    private String startDate; // Format: "2025-05-03"
-    private String endDate; // Format: "2025-05-07"
+    @com.google.gson.annotations.SerializedName("start_date")
+    private String startDate;
+    @com.google.gson.annotations.SerializedName("end_date")
+    private String endDate;
 
+    @com.google.gson.annotations.SerializedName("id")
     private int id;
+    @com.google.gson.annotations.SerializedName("lat")
     private double lat;
+    @com.google.gson.annotations.SerializedName("lng")
     private double lng;
+    @com.google.gson.annotations.SerializedName("image")
     private String image;
+    @com.google.gson.annotations.SerializedName("location")
     private String location;
 
+    @com.google.gson.annotations.SerializedName("description")
+    private String description;
+    @com.google.gson.annotations.SerializedName("source")
+    private String source;
+
     public Event() {
-    } // No-args constructor for Gson
+    }
 
     public Event(String title, String date, String type, boolean isBookmarked) {
         this.title = title;
@@ -101,5 +119,29 @@ public class Event {
 
     public String getEndDate() {
         return endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

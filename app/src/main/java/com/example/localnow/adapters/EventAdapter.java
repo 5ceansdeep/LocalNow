@@ -19,6 +19,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         this.eventList = eventList;
     }
 
+    public void updateList(List<Event> newEvents) {
+        this.eventList = newEvents;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,12 +38,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.subtitle.setText(event.getDate());
 
         // Set Icon based on type
-        if (event.getType().equals("Music")) {
-            holder.icon.setImageResource(R.drawable.ic_marker_yellow);
-        } else if (event.getType().equals("Marathon")) {
-            holder.icon.setImageResource(R.drawable.ic_marker_green);
-        } else if (event.getType().equals("Food")) {
-            holder.icon.setImageResource(R.drawable.ic_marker_pink);
+        String type = event.getType();
+        if (type != null) {
+            if (type.equals("Music")) {
+                holder.icon.setImageResource(R.drawable.ic_marker_yellow);
+            } else if (type.equals("Marathon")) {
+                holder.icon.setImageResource(R.drawable.ic_marker_green);
+            } else if (type.equals("Food")) {
+                holder.icon.setImageResource(R.drawable.ic_marker_pink);
+            } else {
+                holder.icon.setImageResource(R.drawable.ic_marker_yellow); // Default
+            }
+        } else {
+            holder.icon.setImageResource(R.drawable.ic_marker_yellow); // Default
         }
 
         // Set Bookmark
